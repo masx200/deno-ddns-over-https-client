@@ -27,6 +27,7 @@ export async function run_ddns_update_once(
         service_url: string;
     },
 ) {
+    const { ipv4, ipv6 } = opts;
     const client = new DNSRecordsRemoteJSONRPC(opts.service_url, opts.token);
     const [localdata, remotedata] = await Promise.all([
         getAllTailscaleNetworkIPsAndSelfPublicIPs({
@@ -36,7 +37,11 @@ export async function run_ddns_update_once(
             ipv4: opts.ipv4,
             ipv6: opts.ipv6,
         }),
-        client.ListDNSRecords({ name: opts.name }),
+        client.ListDNSRecords({
+            name: opts.name,
+            //ipv6 only or ipv4 only
+            type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
+        }),
     ]);
 
     console.log("本地地址信息", localdata);
