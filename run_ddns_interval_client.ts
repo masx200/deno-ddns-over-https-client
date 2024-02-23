@@ -50,6 +50,21 @@ export async function run_ddns_interval_client(
 if (import.meta.main) {
     const opts = parse(Deno.args);
     console.log(opts);
+    if (
+        Deno.args.length === 0 || !opts.token || !opts.name || !opts.service_url
+    ) {
+        console.log(`- interval: 数值，表示更新间隔时间（单位：毫秒）
+        - ipv4: 布尔值，表示是否启用 IPv4
+        - ipv6: 布尔值，表示是否启用 IPv6
+        - tailscale: 布尔值，表示是否启用 Tailscale
+        - public: 布尔值，表示是否启用公共 地址
+        - token: 字符串，表示 API 令牌
+        - name: 字符串，表示 主机域名
+        - service_url: 字符串，表示 DDNS 服务 URL`);
+
+        throw Error("缺少必须的参数: token /name/ service_url");
+    }
+
     const ipv4 = Boolean(opts.ipv4 ? opts.ipv4 === "true" : true);
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
 
