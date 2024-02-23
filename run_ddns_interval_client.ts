@@ -13,9 +13,9 @@ import { run_ddns_update_once } from "./run_ddns_update_once.ts";
  *   - ipv4: 布尔值，表示是否启用IPv4
  *   - ipv6: 布尔值，表示是否启用IPv6
  *   - tailscale: 布尔值，表示是否启用Tailscale
- *   - public: 布尔值，表示是否启用公共DNS
+ *   - public: 布尔值，表示是否启用公共地址
  *   - token: 字符串，表示API令牌
- *   - name: 字符串，表示DDNS名称
+ *   - name: 字符串，表示 主机域名
  *   - service_url: 字符串，表示DDNS服务URL
  * @returns 返回一个函数，用于清除定时器
  */

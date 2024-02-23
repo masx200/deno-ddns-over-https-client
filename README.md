@@ -14,7 +14,7 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -   ipv4: 布尔值，表示是否启用 IPv4
 -   ipv6: 布尔值，表示是否启用 IPv6
 -   tailscale: 布尔值，表示是否启用 Tailscale
--   public: 布尔值，表示是否启用公共 DNS
+-   public: 布尔值，表示是否启用公共 地址
 -   token: 字符串，表示 API 令牌
--   name: 字符串，表示 DDNS 名称
+-   name: 字符串，表示 主机域名
 -   service_url: 字符串，表示 DDNS 服务 URL
