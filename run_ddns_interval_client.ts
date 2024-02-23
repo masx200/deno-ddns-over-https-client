@@ -43,7 +43,7 @@ export async function run_ddns_interval_client(
         } catch (error) {
             console.error(error);
         } // 每隔指定时间运行一次DDNS更新
-    }, opts.interval);
+    }, opts.interval < 30 * 1000 ? 30 * 1000 : opts.interval);
     return () => clearInterval(timer); // 返回一个清除定时器的函数
 }
 
