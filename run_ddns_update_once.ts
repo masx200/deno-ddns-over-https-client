@@ -77,13 +77,13 @@ export async function run_ddns_update_once(
         }));
         console.log(
             await Promise.all([
-                client.CreateDNSRecord(
+                需要添加的记录内容.length && client.CreateDNSRecord(
                     需要添加的记录内容,
                 ),
-                client.DeleteDNSRecord(
+                需要删除的记录ID.length && client.DeleteDNSRecord(
                     需要删除的记录ID,
                 ),
-            ]),
+            ].filter(Boolean)),
         );
         console.log("更新完成", { 需要删除的记录ID, 需要添加的记录内容 });
     }
