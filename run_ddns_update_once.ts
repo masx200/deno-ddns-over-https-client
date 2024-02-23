@@ -42,7 +42,10 @@ export async function run_ddns_update_once(
     console.log("本地地址信息", localdata);
 
     console.log("远程地址信息", remotedata);
-
+    if (!localdata.length) {
+        console.error("本地地址信息为空,不进行更新");
+        return;
+    }
     const localset = new Set(localdata.map((a) => a.content));
     const remoteset = new Set(remotedata.map((a) => a.content));
     if (
