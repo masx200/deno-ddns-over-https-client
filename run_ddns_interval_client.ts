@@ -50,10 +50,16 @@ export async function run_ddns_interval_client(
 if (import.meta.main) {
     const opts = parse(Deno.args);
     console.log(opts);
+    const ipv4 = Boolean(opts.ipv4 ? opts.ipv4 === "true" : true);
+    const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
+
+    if (!ipv4 && !ipv6) {
+        throw new Error("ipv4 and ipv6 must be true or false");
+    }
     /*  const stop = */ await run_ddns_interval_client({
         interval: Number(opts.interval || 30 * 1000),
-        ipv4: Boolean(opts.ipv4 ? opts.ipv4 === "true" : true),
-        ipv6: Boolean(opts.ipv6 ? opts.ipv6 === "true" : true),
+        ipv4: ipv4,
+        ipv6: ipv6,
         tailscale: Boolean(opts.tailscale ? opts.tailscale === "true" : true),
         public: Boolean(opts.public ? opts.public === "true" : true),
         token: opts.token ?? "token",
