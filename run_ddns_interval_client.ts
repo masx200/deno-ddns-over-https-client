@@ -5,6 +5,7 @@
 
 import parse from "npm:@masx200/mini-cli-args-parser@1.1.0";
 import { run_ddns_update_once } from "./run_ddns_update_once.ts";
+import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 
 /**
  * 异步函数，用于运行DDNS间隔客户端
@@ -74,12 +75,14 @@ if (import.meta.main) {
 
     const ipv4 = Boolean(opts.ipv4 ? opts.ipv4 === "true" : true);
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
-
+    const interval = Number(opts.interval || 30 * 1000);
+    assert(Number.isFinite(interval), "interval 必须是数字");
     if (!ipv4 && !ipv6) {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
+
     /*  const stop = */ await run_ddns_interval_client({
-        interval: Number(opts.interval || 30 * 1000),
+        interval: interval,
         ipv4: ipv4,
         ipv6: ipv6,
         tailscale: Boolean(opts.tailscale ? opts.tailscale === "true" : true),
