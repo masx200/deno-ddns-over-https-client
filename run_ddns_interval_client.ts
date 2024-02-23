@@ -37,13 +37,18 @@ export async function run_ddns_interval_client(
         console.error(error);
     }
 
-    const timer = setInterval(async () => {
-        try {
-            await run_ddns_update_once(opts); // 运行一次DDNS更新
-        } catch (error) {
-            console.error(error);
-        } // 每隔指定时间运行一次DDNS更新
-    }, opts.interval < 30 * 1000 ? 30 * 1000 : opts.interval);
+    const timer = setInterval(
+        async () => {
+            try {
+                await run_ddns_update_once(opts); // 运行一次DDNS更新
+            } catch (error) {
+                console.error(error);
+            } // 每隔指定时间运行一次DDNS更新
+        },
+        (Number.isNaN(opts.interval) || (opts.interval < 30 * 1000))
+            ? 30 * 1000
+            : opts.interval,
+    );
     return () => clearInterval(timer); // 返回一个清除定时器的函数
 }
 
