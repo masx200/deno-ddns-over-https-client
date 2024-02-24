@@ -43,7 +43,9 @@ export async function run_ddns_update_once(
         if (opts.interfaces) {
             for (
                 const networkInterfaceInfo of Deno.networkInterfaces().filter(
-                    (a) => a.address !== "127.0.0.1" && a.address !== "::1",
+                    (a) =>
+                        a.address !== "127.0.0.1" && a.address !== "::1" &&
+                        !a.address.startsWith("fe80::"),
                 )
             ) {
                 if (typeof opts.interfaces === "boolean" && opts.interfaces) {
