@@ -6,20 +6,7 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import parse from "npm:@masx200/mini-cli-args-parser@1.1.0";
 import { run_ddns_update_once } from "./run_ddns_update_once.ts";
-export interface DDNSClientOptions {
-    interval: number;
-    ipv4: boolean;
-    ipv6: boolean;
-    tailscale: boolean;
-    public: boolean;
-    get_ip_url: string[];
-    private: boolean;
-    interfaces: boolean | string[];
-    token: string;
-    name: string;
-    service_url: string;
-}
-
+import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 /**
  * 异步函数,用于运行DDNS间隔客户端
  * @param opts - 包含以下属性的对象：
@@ -152,7 +139,7 @@ async function main() {
 
         token: opts.token ?? "token",
 
-        name: opts.name ?? "name",
+        name: opts.name.split(",") ?? "name",
 
         service_url: opts.service_url ?? "XXXXXXXXXXXXXXXXXXXXX",
     });

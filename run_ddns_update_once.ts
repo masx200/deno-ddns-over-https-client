@@ -2,7 +2,7 @@ import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
 
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
-import { DDNSClientOptions } from "./run_ddns_interval_client.ts";
+import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 
 /**
  * 异步函数,用于执行一次DDNS更新
@@ -19,72 +19,78 @@ import { DDNSClientOptions } from "./run_ddns_interval_client.ts";
 export async function run_ddns_update_once(
     opts: DDNSClientOptions,
 ) {
-    const { ipv4, ipv6 } = opts;
-    const client = new DNSRecordsRemoteJSONRPC(opts.service_url, opts.token);
-    const [localdata, remotedata] = await Promise.all([
-        getAllTailscaleNetworkIPsAndSelfPublicIPs({
-            name: opts.name,
-            public: opts.public,
-            tailscale: opts.tailscale,
-            ipv4: opts.ipv4,
-            ipv6: opts.ipv6,
-        }),
-        client.ListDNSRecords({
-            name: opts.name,
-            //ipv6 only or ipv4 only
-            type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
-        }),
-    ]);
-
-    console.log("本地地址信息", localdata);
-
-    console.log("远程地址信息", remotedata);
-    if (!localdata.length) {
-        console.error("本地地址信息为空,不进行更新");
-        return;
-    }
-    const localset = new Set(localdata.map((a) => a.content));
-    const remoteset = new Set(remotedata.map((a) => a.content));
-    if (
-        localset.size === remoteset.size &&
-        [...localset].every((value) => remoteset.has(value))
-    ) {
-        console.log("两个地址记录完全相等");
-        return;
-    } else {
-        console.log("两个地址记录不相等");
-        const differencelocalsetToremoteset = new Set(
-            [...localset].filter((x) => !remoteset.has(x)),
+    for (const name of opts.name) {
+        const { ipv4, ipv6 } = opts;
+        const client = new DNSRecordsRemoteJSONRPC(
+            opts.service_url,
+            opts.token,
         );
-        console.log("需要添加的地址", differencelocalsetToremoteset);
-        const differenceremotesetTolocalset = new Set(
-            [...remoteset].filter((x) => !localset.has(x)),
-        );
-        console.log("需要删除的地址", differenceremotesetTolocalset);
-        const recordstobedeletedids = [...differenceremotesetTolocalset].map(
-            (b) => remotedata.filter((a) => a.content === b),
-        ).flat();
+        const [localdata, remotedata] = await Promise.all([
+            getAllTailscaleNetworkIPsAndSelfPublicIPs({
+                name: name,
+                public: opts.public,
+                tailscale: opts.tailscale,
+                ipv4: opts.ipv4,
+                ipv6: opts.ipv6,
+            }),
+            client.ListDNSRecords({
+                name: name,
+                //ipv6 only or ipv4 only
+                type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
+            }),
+        ]);
 
-        const 需要删除的记录ID = recordstobedeletedids.map((a) => ({
-            id: a.id,
-        }));
-        const 需要添加的记录内容 = [...differencelocalsetToremoteset].map((
-            a,
-        ) => ({
-            content: a,
-            name: opts.name,
-            type: isIPv6(a) ? "AAAA" : "A",
-        }));
-        console.log(
-            await Promise.all([
-                需要添加的记录内容.length && client.CreateDNSRecord(
-                    需要添加的记录内容,
-                ),
-                需要删除的记录ID.length && client.DeleteDNSRecord(
-                    需要删除的记录ID,
-                ),
-            ].filter(Boolean)),
-        );
-        console.log("更新完成", { 需要删除的记录ID, 需要添加的记录内容 });
+        console.log("本地地址信息", localdata);
+
+        console.log("远程地址信息", remotedata);
+        if (!localdata.length) {
+            console.error("本地地址信息为空,不进行更新");
+            return;
+        }
+        const localset = new Set(localdata.map((a) => a.content));
+        const remoteset = new Set(remotedata.map((a) => a.content));
+        if (
+            localset.size === remoteset.size &&
+            [...localset].every((value) => remoteset.has(value))
+        ) {
+            console.log("两个地址记录完全相等");
+            return;
+        } else {
+            console.log("两个地址记录不相等");
+            const differencelocalsetToremoteset = new Set(
+                [...localset].filter((x) => !remoteset.has(x)),
+            );
+            console.log("需要添加的地址", differencelocalsetToremoteset);
+            const differenceremotesetTolocalset = new Set(
+                [...remoteset].filter((x) => !localset.has(x)),
+            );
+            console.log("需要删除的地址", differenceremotesetTolocalset);
+            const recordstobedeletedids = [...differenceremotesetTolocalset]
+                .map(
+                    (b) => remotedata.filter((a) => a.content === b),
+                ).flat();
+
+            const 需要删除的记录ID = recordstobedeletedids.map((a) => ({
+                id: a.id,
+            }));
+            const 需要添加的记录内容 = [...differencelocalsetToremoteset].map((
+                a,
+            ) => ({
+                content: a,
+                name: name,
+                type: isIPv6(a) ? "AAAA" : "A",
+            }));
+            console.log(
+                await Promise.all([
+                    需要添加的记录内容.length && client.CreateDNSRecord(
+                        需要添加的记录内容,
+                    ),
+                    需要删除的记录ID.length && client.DeleteDNSRecord(
+                        需要删除的记录ID,
+                    ),
+                ].filter(Boolean)),
+            );
+            console.log("更新完成", { 需要删除的记录ID, 需要添加的记录内容 });
+        }
     }
 }
