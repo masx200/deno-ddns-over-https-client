@@ -7,6 +7,7 @@ import { getPublicIpv4orv6 } from "./getPublicIpv4orv6.ts";
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { isPrivate } from "./isPrivate.ts";
 import { isPublic } from "./isPublic.ts";
+
 /**
  * 异步函数,用于执行一次DDNS更新
  * @param opts - 配置选项
@@ -43,12 +44,14 @@ export async function run_ddns_update_once(
             }),
         ]);
         if (opts.interfaces) {
+            const networkInterfaces = Deno.networkInterfaces().filter(
+                (a) =>
+                    a.address !== "127.0.0.1" && a.address !== "::1" &&
+                    !a.address.startsWith("fe80::"),
+            );
+            console.log(networkInterfaces);
             for (
-                const networkInterfaceInfo of Deno.networkInterfaces().filter(
-                    (a) =>
-                        a.address !== "127.0.0.1" && a.address !== "::1" &&
-                        !a.address.startsWith("fe80::"),
-                )
+                const networkInterfaceInfo of networkInterfaces
             ) {
                 if (typeof opts.interfaces === "boolean" && opts.interfaces) {
                     localdata.push({
@@ -73,16 +76,18 @@ export async function run_ddns_update_once(
             }
         }
 
-        localdata.push(
-            ...await Promise.all(opts.get_ip_url.map(async (a) => {
-                const ip = await getPublicIpv4orv6(a);
-                return {
-                    name: name,
-                    content: ip,
-                    type: isIPv6(ip) ? "AAAA" : "A",
-                };
-            })),
-        );
+        if (opts.public && opts.get_ip_url.length) {
+            localdata.push(
+                ...await Promise.all(opts.get_ip_url.map(async (a) => {
+                    const ip = await getPublicIpv4orv6(a);
+                    return {
+                        name: name,
+                        content: ip,
+                        type: isIPv6(ip) ? "AAAA" : "A",
+                    };
+                })),
+            );
+        }
         localdata = localdata.filter(function (a) {
             if (ipv6 && isIPv6(a.content)) {
                 return true;
