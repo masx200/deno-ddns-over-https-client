@@ -102,7 +102,7 @@ async function main() {
     );
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
     const private_param = Boolean(
-        opts.private ? opts.private === "true" : true,
+        opts.private ? opts.private === "true" : false,
     );
 
     const interval = Number(opts.interval || 30 * 1000);
@@ -122,7 +122,7 @@ async function main() {
             "https://api6.ipify.org/",
         ]).filter(Boolean);
     const tailscale = Boolean(
-        opts.tailscale ? opts.tailscale === "true" : true,
+        opts.tailscale ? opts.tailscale === "true" : false,
     );
     const public_param = Boolean(opts.public ? opts.public === "true" : true);
     /*  const stop = */ await run_ddns_interval_client({
