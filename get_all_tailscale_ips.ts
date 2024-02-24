@@ -27,16 +27,20 @@ export async function getAllTailscaleNetworkIPsAndSelfPublicIPs(
     };
 
     if (tailscale) {
-        const text = await runCommand("tailscale", ["status", "--json"]);
-        const data: {
-            Self: { DNSName: string; TailscaleIPs: string[] };
-            // Peer: Record<string, { DNSName: string; TailscaleIPs: string[] }>;
-        } = JSON.parse(text);
-        selfIPs.push(...Array.from(data.Self.TailscaleIPs));
-        const tailscale_name = tailscale
-            ? data.Self.DNSName.slice(0, -1)
-            : name;
-        config[tailscale_name] = selfIPs;
+        try {
+            const text = await runCommand("tailscale", ["status", "--json"]);
+            const data: {
+                Self: { DNSName: string; TailscaleIPs: string[] };
+                // Peer: Record<string, { DNSName: string; TailscaleIPs: string[] }>;
+            } = JSON.parse(text);
+            selfIPs.push(...Array.from(data.Self.TailscaleIPs));
+            const tailscale_name = tailscale
+                ? data.Self.DNSName.slice(0, -1)
+                : name;
+            config[tailscale_name] = selfIPs;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     // for (const v of Object.values(data.Peer)) {
