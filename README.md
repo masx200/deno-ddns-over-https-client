@@ -20,6 +20,8 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -
 -   public: 布尔值，表示是否启用公共地址
 -
+-   private: 布尔值，表示是否启用私有地址
+-
 -   token: 字符串，表示 API 令牌
 -
 -   name: 字符串，表示 主机域名
