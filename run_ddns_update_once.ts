@@ -25,6 +25,7 @@ export async function run_ddns_update_once(
         token: string;
         name: string;
         service_url: string;
+        interfaces: boolean;
     },
 ) {
     const { ipv4, ipv6 } = opts;
