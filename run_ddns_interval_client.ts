@@ -18,7 +18,7 @@ import { run_ddns_update_once } from "./run_ddns_update_once.ts";
  *   - token: 字符串，表示API令牌
  *   - name: 字符串，表示 主机域名
  *   - service_url: 字符串，表示DDNS服务URL
- * - interfaces:布尔值，表示是否启用接口地址,忽略私有地址
+ * - interfaces:布尔值，表示是否启用接口地址,忽略回环地址
  * @returns 返回一个函数，用于清除定时器
  */
 export async function run_ddns_interval_client(
@@ -72,7 +72,7 @@ const helptext = `- interval: 数值，表示更新间隔时间（单位：毫�
 
 - service_url: 字符串，表示 DDNS 服务 URL
 
-- interfaces:布尔值，表示是否启用接口地址,忽略私有地址
+- interfaces:布尔值，表示是否启用接口地址,忽略回环地址
 
 必须的参数: token /name/ service_url
 `;
