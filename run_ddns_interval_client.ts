@@ -95,7 +95,13 @@ async function main() {
     const ipv4 = Boolean(opts.ipv4 ? opts.ipv4 === "true" : true);
 
     const interfaces = Boolean(
-        opts.interfaces ? opts.interfaces === "true" : true,
+        opts.interfaces
+            ? opts.interfaces === "true"
+                ? true
+                : opts.interfaces === "false"
+                ? false
+                : opts.interfaces?.split(",")
+            : false,
     );
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
     const private_param = Boolean(
