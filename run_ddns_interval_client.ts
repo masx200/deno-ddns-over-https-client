@@ -71,7 +71,7 @@ const helptext = `interval: 数值,表示更新间隔时间（单位：毫秒）
 -
 -   token: 字符串,表示 API 令牌,必须的.
 -
--   name: 字符串,表示 主机域名,必须的.
+-   name: 字符串,表示 主机域名,可以有多个域名,用逗号分隔,必须的.
 -
 -   service_url: 字符串,表示 DDNS 服务 URL,必须的.
 -
