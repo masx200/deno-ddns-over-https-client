@@ -16,7 +16,7 @@ import { parse } from "cache-control-parser";
  * 缓存DNS查询的POST和GET方法
  * @param {Context} ctx - 请求上下文对象
  * @param {NextFunction} next - 下一个中间件函数
- * @returns {Promise<RetHandler>} - 返回一个Promise对象，用于处理请求的返回结果
+ * @returns {Promise<RetHandler>} - 返回一个Promise对象,用于处理请求的返回结果
  */
 export async function cache_dns_query_post_and_get_method(
     ctx: Context,
@@ -61,7 +61,7 @@ export async function cache_dns_query_post_and_get_method(
         } catch (error) {
             console.error(error);
             await next();
-            return; // 跳过缓存处理，继续执行下一个中间件函数
+            return; // 跳过缓存处理,继续执行下一个中间件函数
         }
     }
     await next();
@@ -99,7 +99,7 @@ export async function cache_dns_query_post_and_get_method(
             ctx.response.body = response_body;
         } catch (error) {
             console.error(error);
-            return; // 跳过缓存处理，继续执行下一个中间件函数
+            return; // 跳过缓存处理,继续执行下一个中间件函数
         }
     } else {
         return;

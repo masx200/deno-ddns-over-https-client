@@ -5,7 +5,7 @@ import { Context } from "https://cdn.jsdelivr.net/gh/masx200/deno-http-middlewar
 /**
  * 判断是否应该缓存请求和响应
  * @param {Context} ctx - 请求上下文对象
- * @returns {boolean} - 返回一个布尔值，表示是否应该缓存请求和响应
+ * @returns {boolean} - 返回一个布尔值,表示是否应该缓存请求和响应
  */
 export function should_cache_request_response(ctx: Context): boolean {
     return (

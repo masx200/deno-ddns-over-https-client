@@ -9,7 +9,7 @@ import { dns_query_path_name } from "./dns_query_path_name.tsx";
 import { get_path_name } from "./get_path_name.tsx";
 
 /**
- * 中间件函数，用于处理请求
+ * 中间件函数,用于处理请求
  * @param {Context} context - 请求上下文对象
  * @param {NextFunction} next - 下一个中间件函数
  * @returns {Promise<Response>} - 响应对象

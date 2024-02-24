@@ -11,7 +11,7 @@ export async function runCommand(cmd: string, args: string[]): Promise<string> {
     });
     // 执行命令并获取输出结果
     const { code, stdout, stderr } = await command.output();
-    // 如果命令执行失败，则抛出异常
+    // 如果命令执行失败,则抛出异常
     if (code !== 0) {
         throw new Error(
             `Command failed with exit code ${code} . Error:` +

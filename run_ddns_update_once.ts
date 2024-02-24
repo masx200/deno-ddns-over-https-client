@@ -4,7 +4,7 @@ import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_i
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 
 /**
- * 异步函数，用于执行一次DDNS更新
+ * 异步函数,用于执行一次DDNS更新
  * @param opts - 配置选项
  * @param opts.interval - 更新间隔时间（单位：秒）
  * @param opts.ipv4 - 是否使用IPv4地址

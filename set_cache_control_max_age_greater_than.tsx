@@ -8,9 +8,9 @@ import { get_path_name } from "./get_path_name.tsx";
 import { dns_query_path_name } from "./dns_query_path_name.tsx";
 
 /**
- * 设置缓存控制的最大年龄大于指定的最小年龄，并根据条件执行中间件函数。
+ * 设置缓存控制的最大年龄大于指定的最小年龄,并根据条件执行中间件函数。
  * @param min_age 最小年龄
- * @param condition 条件函数，参数为上下文对象，返回布尔值
+ * @param condition 条件函数,参数为上下文对象,返回布尔值
  * @returns 中间件函数
  */
 export function set_cache_control_max_age_greater_than(

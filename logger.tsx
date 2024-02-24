@@ -11,7 +11,7 @@ import { JSONSTRINGIFYNULL4 } from "./JSONSTRINGIFYNULL4.ts";
  *
  * @param context 请求上下文
  * @param next 下一个中间件函数
- * @returns 返回一个Promise，最终处理结果
+ * @returns 返回一个Promise,最终处理结果
  */
 export async function logger(
     context: Context,

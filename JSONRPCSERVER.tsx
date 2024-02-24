@@ -71,7 +71,7 @@ export async function JSONRPCSERVER<
 /**
  * 判断数据是否为对象
  * @param data - 待判断的数据
- * @returns 如果数据为对象则返回true，否则返回false
+ * @returns 如果数据为对象则返回true,否则返回false
  */
 export function isObject(data: any) {
     return "[object Object]" === Object.prototype.toString.call(data);
