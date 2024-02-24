@@ -6,6 +6,19 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import parse from "npm:@masx200/mini-cli-args-parser@1.1.0";
 import { run_ddns_update_once } from "./run_ddns_update_once.ts";
+export interface DDNSClientOptions {
+    interval: number;
+    ipv4: boolean;
+    ipv6: boolean;
+    tailscale: boolean;
+    public: boolean;
+    get_ip_url: string[];
+    private: boolean;
+    interfaces: boolean | string[];
+    token: string;
+    name: string;
+    service_url: string;
+}
 
 /**
  * 异步函数,用于运行DDNS间隔客户端
@@ -22,18 +35,7 @@ import { run_ddns_update_once } from "./run_ddns_update_once.ts";
  * @returns 返回一个函数,用于清除定时器
  */
 export async function run_ddns_interval_client(
-    opts: {
-        interval: number;
-        ipv4: boolean;
-        ipv6: boolean;
-        tailscale: boolean;
-        public: boolean;
-        private: boolean | string;
-        interfaces: boolean | string;
-        token: string;
-        name: string;
-        service_url: string;
-    },
+    opts: DDNSClientOptions,
 ): Promise<() => void> {
     try {
         await run_ddns_update_once(opts); // 运行一次DDNS更新
@@ -69,15 +71,14 @@ const helptext = `
 -
 - public: 布尔值,表示是否启用公共地址,默认为 true.
 -
-- get_ip_url:布尔值或字符串,向服务器查询本机的公共地址,可以为多个字符串，逗号分割,默认为https://ipv6.ident.me/,https://ipv4.ident.me/,https://4.ipw.cn,https://6.ipw.cn，https://api4.ipify.org，https://api6.ipify.org/。
+- get_ip_url:布尔值或字符串,向服务器查询本机的公共地址,可以为多个字符串,逗号分割,默认为\`https://ipv6.ident.me/,https://ipv4.ident.me/,https://4.ipw.cn,https://6.ipw.cn,https://api4.ipify.org,https://api6.ipify.org/\`。
 -
 -
 - private: 布尔值,表示是否启用私有地址,忽略回环地址,默认为 false。
 -
-- allowed_cidr:字符串,可以是多个允许的 cidr,比如
-  192.168.1.0/24,100.64.0.0/10,用逗号分隔,默认为允许公有地址.
 
-- prohibited_cidr:字符串可以是多个禁止的 cidr，逗号分割，默认为禁止私有地址。
+
+
 -
 - token: 字符串,表示 API 令牌,必须的.
 -
@@ -87,9 +88,7 @@ const helptext = `
 -
 - 必须的参数: token /name/ service_url.
 -
-- interfaces:布尔值或字符串,表示是否启用接口地址,忽略回环地址,默认为
-  false,或者可以是多个 接口名,用逗号分隔,比如 eth0,eth1.默认为 false.默认为
-  false.
+- interfaces:布尔值或字符串,表示是否启用接口地址,忽略回环地址,或者可以是多个 接口名,用逗号分隔,比如 eth0,eth1.默认为 false.
 -
 `;
 if (import.meta.main) {
@@ -126,14 +125,22 @@ async function main() {
     if (!ipv4 && !ipv6) {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
-
+    const get_ip_url: string[] = (opts.get_ip_url?.split(",") ??
+        [
+            "https://ipv6.ident.me/",
+            "https://ipv4.ident.me/",
+            "https://4.ipw.cn",
+            "https://6.ipw.cn",
+            "https://api4.ipify.org",
+            "https://api6.ipify.org/",
+        ]).filter(Boolean);
     const tailscale = Boolean(
         opts.tailscale ? opts.tailscale === "true" : true,
     );
     const public_param = Boolean(opts.public ? opts.public === "true" : true);
     /*  const stop = */ await run_ddns_interval_client({
         interval: interval,
-
+        get_ip_url,
         ipv4: ipv4,
         private: private_param,
         interfaces,

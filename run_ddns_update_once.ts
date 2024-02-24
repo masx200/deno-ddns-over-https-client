@@ -2,6 +2,7 @@ import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
 
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
+import { DDNSClientOptions } from "./run_ddns_interval_client.ts";
 
 /**
  * 异步函数,用于执行一次DDNS更新
@@ -16,18 +17,7 @@ import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
  * @param opts.service_url - 服务URL
  */
 export async function run_ddns_update_once(
-    opts: {
-        interval: number;
-        ipv4: boolean;
-        ipv6: boolean;
-        tailscale: boolean;
-        public: boolean;
-        private: boolean | string;
-        interfaces: boolean | string;
-        token: string;
-        name: string;
-        service_url: string;
-    },
+    opts: DDNSClientOptions,
 ) {
     const { ipv4, ipv6 } = opts;
     const client = new DNSRecordsRemoteJSONRPC(opts.service_url, opts.token);
