@@ -4,6 +4,15 @@ import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_i
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 import { isIPv4 } from "https://deno.land/std@0.169.0/node/internal/net.ts";
+import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
+import { check_response_ok } from "https://deno.land/x/masx200_get_public_ip_address@1.0.4/check_response_ok.ts";
+export async function getPublicIpv4orv6(get_ip_url: string): Promise<string> {
+    const response = await fetch(get_ip_url);
+    await check_response_ok(response);
+    const text = await response.text();
+    assert(isIPv4(text) || isIPv6(text), "isIPv4orv6");
+    return text;
+}
 
 /**
  * 异步函数,用于执行一次DDNS更新
@@ -71,6 +80,16 @@ export async function run_ddns_update_once(
             }
         }
 
+        localdata.push(
+            ...await Promise.all(opts.get_ip_url.map(async (a) => {
+                const ip = await getPublicIpv4orv6(a);
+                return {
+                    name: name,
+                    content: ip,
+                    type: isIPv6(ip) ? "AAAA" : "A",
+                };
+            })),
+        );
         localdata = localdata.filter(function (a) {
             if (ipv6 && isIPv6(a.content)) {
                 return true;
@@ -86,6 +105,7 @@ export async function run_ddns_update_once(
                 return true;
             }
         });
+
         console.log("本地地址信息", localdata);
 
         console.log("远程地址信息", remotedata);
