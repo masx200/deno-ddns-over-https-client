@@ -9,7 +9,10 @@ import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import { check_response_ok } from "https://deno.land/x/masx200_get_public_ip_address@1.0.4/check_response_ok.ts";
 import { uniqBy } from "https://esm.sh/lodash-es@4.17.21/";
 export async function getPublicIpv4orv6(get_ip_url: string): Promise<string> {
-    const response = await fetch(get_ip_url);
+    const request = new Request(get_ip_url);
+    console.log({ request });
+    const response = await fetch(request);
+    console.log({ response, request });
     await check_response_ok(response);
     const text = await response.text();
     assert(isIPv4(text) || isIPv6(text), "isIPv4orv6");
