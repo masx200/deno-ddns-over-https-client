@@ -38,5 +38,5 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -   必须的参数: token /name/ service_url.
 -
 -   interfaces:布尔值,表示是否启用接口地址,忽略回环地址,默认为 false,或者可以是多个
-    接口名,用逗号分隔,比如 eth0,eth1.
+    接口名,用逗号分隔,比如 eth0,eth1.默认为false.
 -
