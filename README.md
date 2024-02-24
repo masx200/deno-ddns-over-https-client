@@ -20,7 +20,7 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -
 -   public: 布尔值,表示是否启用公共地址,并向服务器查询本机的公共地址,默认为 true.
 -
--   private: 布尔值,表示是否启用私有地址,或者可以是多个 cidr,比如
+-   private: 布尔值,表示是否启用私有地址,忽略回环地址,或者可以是多个 cidr,比如
     192.168.1.0/24,100.64.0.0/10,用逗号分隔,默认为 false.
 -
 -   token: 字符串,表示 API 令牌,必须的.
