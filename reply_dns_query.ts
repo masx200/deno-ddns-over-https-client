@@ -10,7 +10,7 @@ import { DNSRecordType } from "./DNSRecordType.ts";
 import { DNSPACKETInterface } from "./DNSPACKETInterface.ts";
 import { dNSRecordsInstance } from "./dNSRecordsInstance.ts";
 //@deno-types="https://unpkg.com/@types/lodash-es@4.17.12/index.d.ts"
-import { uniq } from "npm:lodash-es@4.17.21";
+import { uniq } from "https://esm.sh/lodash-es@4.17.21";
 // import { DNSPACKET } from "./DNSPACKET.ts";
 /**
  * 回复DNS查询

@@ -2,13 +2,14 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:@masx200/mini-cli-args-parser@1.1.0": "npm:@masx200/mini-cli-args-parser@1.1.0",
-      "npm:@types/node": "npm:@types/node@18.16.19",
-      "npm:@types/node@20.11.19": "npm:@types/node@20.11.19",
-      "npm:@types/node@20.2.5": "npm:@types/node@20.2.5",
-      "npm:buffer@6.0.3": "npm:buffer@6.0.3",
-      "npm:ip": "npm:ip@2.0.1",
-      "npm:lodash-es@4.17.21": "npm:lodash-es@4.17.21",
+      "https://esm.sh/@masx200/mini-cli-args-parser@1.1.0": "https://esm.sh/@masx200/mini-cli-args-parser@1.1.0",
+      "https://esm.sh/@types/node": "https://esm.sh/@types/node@18.16.19",
+      "https://esm.sh/@types/node@20.11.19": "https://esm.sh/@types/node@20.11.19",
+      "https://esm.sh/@types/node@20.2.5": "https://esm.sh/@types/node@20.2.5",
+      "https://esm.sh/buffer@6.0.3": "https://esm.sh/buffer@6.0.3",
+      "https://esm.sh/ip": "https://esm.sh/ip@2.0.1",
+      "https://esm.sh/lodash-es@4.17.12": "https://esm.sh/lodash-es@4.17.12",
+      "https://esm.sh/lodash-es@4.17.21": "npm:lohttps://esm.sh/-es@4.17.21",
       "npm:native-dns-packet@0.1.1": "npm:native-dns-packet@0.1.1"
     },
     "npm": {
@@ -71,6 +72,10 @@
         "integrity": "sha512-LlbxQ7xKzfBusov6UMi4MFpEg0m+mAm9xyNGEduwXMEDuf4WfzB/RZwMVYEd7IKGvh4IUkEXYxtAVu9T3OelJQ==",
         "dependencies": {}
       },
+      "lodash-es@4.17.12": {
+        "integrity": "sha512-QZFYEFzdiiPuWMJX8ByFaOpyDe4ETfV7bDu4LiXC50BXadeMvJlE9JoFdKtqMedIw2k4n6GVTwTHFQlo0OjJWw==",
+        "dependencies": {}
+      },
       "lodash-es@4.17.21": {
         "integrity": "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==",
         "dependencies": {}
@@ -97,9 +102,14 @@
     }
   },
   "redirects": {
-    "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=types/isPlainObject": "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=types/isPlainObject.d.ts"
+    "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=types/isPlainObject": "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=types/isPlainObject.d.ts",
+    "https://esm.sh/@types/node@20.2.5/assert.d.ts": "https://esm.sh/v135/@types/node@20.2.5/assert.d.ts",
+    "https://esm.sh/v135/@types/ip@latest/index.d.ts": "https://esm.sh/v135/@types/ip@1.1.3/index.d.ts",
+    "https://esm.sh/v135/@types/lodash-es@~4.17/index.d.ts": "https://esm.sh/v135/@types/lodash-es@4.17.12/index.d.ts",
+    "https://esm.sh/v135/@types/lodash@4.14.202/index": "https://esm.sh/v135/@types/lodash@4.14.202/index~.d.ts"
   },
   "remote": {
+    "httphttps://esm.sh/esm.sh/@hattip/response@0.0.34/": "8396cd44b8f95282fe118f41a4fb58b95d1d6830b53a623578b9e4819e81cfa6",
     "https://cdn.jsdelivr.net/gh/masx200/deno-http-middleware@3.3.0/adapter/IncomingMessageToRequest.ts": "740d7a1851125a8029d450a2de5ffb38187cb41986fab44c2bdf38cd8f8fbfff",
     "https://cdn.jsdelivr.net/gh/masx200/deno-http-middleware@3.3.0/adapter/RequestListener.ts": "84cfe40666d0cbc09b4a1f7d43048173979b7385052e1b4afe3a3b337797f3a4",
     "https://cdn.jsdelivr.net/gh/masx200/deno-http-middleware@3.3.0/adapter/ResponseToServerResponse.ts": "ede96998db2fc2325339172c494fab256394f9c1fb157b7b686bf91762c4f475",
@@ -358,10 +368,27 @@
     "https://deno.land/x/mongo@v0.32.0/src/utils/srv.ts": "ed5f78ffe6480faac68291a87e51e3674eff5f28aec937ee97248e99e1317b16",
     "https://deno.land/x/mongo@v0.32.0/src/utils/uri.ts": "dcfab8e1dcfcc875c75ada1d9f366664480c03b65594990d6342ed88925452e5",
     "https://deno.land/x/web_bson@v0.3.0/mod.js": "8e14aecd31ee63abd30e2dbaa284b4b67abb7ba51fcef5b96af74727cb7c7940",
-    "https://esm.sh/@hattip/response@0.0.34/": "8396cd44b8f95282fe118f41a4fb58b95d1d6830b53a623578b9e4819e81cfa6",
+    "https://esm.sh/@masx200/mini-cli-args-parser@1.1.0": "7db76714eec551931817484b3fbe0e6a7f64ae8a05d3e981fa8b73ce204af7b3",
+    "https://esm.sh/buffer@6.0.3": "6c83bf9cd2aa8d70f2695784bb527fd671bb83797f4cbf20eafdff9b10b6b0cc",
     "https://esm.sh/cache-control-parser@2.0.5/": "4016ca938ba3a3fc37f9c82a26c97686e50c4ba1dc638d856664395892b1ed64",
+    "https://esm.sh/ip@2.0.1/": "50b898d7b25478a9b0934bff66be66b51d07edd254974ca17ed7f317b73f0cf5",
+    "https://esm.sh/lodash-es@4.17.21/": "460848e64379750386465df2bfcbe530dc5be584cabb39816e0dec105e5f9af2",
+    "https://esm.sh/native-dns-packet@0.1.1": "e55e5e7d3587af597448765d52d8722f730ffd2c5cdbc850176c5fc4dab09355",
+    "https://esm.sh/v133/assert-plus@1.0.0/denonext/assert-plus.mjs": "50ebe34b817cc311a7ebbe63d5af0b72ad0ab9e30b6c90e3344c11556e98e2c2",
+    "https://esm.sh/v133/buffercursor@0.0.12/denonext/buffercursor.mjs": "a8f204a1d225d40a38e8d5e1a873fd4debb32c294fbf0be04ec337bafe2cb7d7",
+    "https://esm.sh/v133/core-util-is@1.0.2/denonext/core-util-is.mjs": "68c63612923430dfc235660d8f51ee58c62f006647fd2c7e70d2bd6cb88490a9",
+    "https://esm.sh/v133/extsprintf@1.4.1/denonext/extsprintf.mjs": "8bdd25041746ec393223c2ab3f740f38d672b8f6e52e384f5c9f114688319405",
+    "https://esm.sh/v133/ipaddr.js@2.1.0/denonext/ipaddr.mjs": "214c1ee845e73e7c51ba673b36e7e6b9c5d8e8fb1fc19443444ad9cec44adf7e",
+    "https://esm.sh/v133/native-dns-packet@0.1.1/denonext/native-dns-packet.mjs": "a8fe5b8d62895c6ed28d705f7ef57529b83e264b6bf59980afb01588fb488b7c",
+    "https://esm.sh/v133/verror@1.10.1/denonext/verror.mjs": "e60a738913699933d881e13cd89d6ace6e563e259abce2bfa2e5827a20b1ba65",
     "https://esm.sh/v135/@hattip/response@0.0.34/denonext/response.mjs": "ca0620cb0467fe269bfe2473ef35f51de34647b4dc94a316412502491bab1e0a",
-    "https://esm.sh/v135/cache-control-parser@2.0.5/denonext/cache-control-parser.mjs": "3ad5fdba7a0073afa5f2d66e2572d4f9b68c1c346786189ecdf3b4e486a36c39"
+    "https://esm.sh/v135/@masx200/mini-cli-args-parser@1.1.0/denonext/mini-cli-args-parser.mjs": "96cd78e63270303ecc32c2e3504b21cf38da4b9a98650774cbf0b944bbf4b4c7",
+    "https://esm.sh/v135/base64-js@1.5.1/denonext/base64-js.mjs": "37ce4431d0b110375d0cafee5cb015592b09352595aca9393e5ecf417f71fae2",
+    "https://esm.sh/v135/buffer@6.0.3/denonext/buffer.mjs": "1c26f712283012aa7a7ce8e55279241ee7aa84bf936f746a5fec2ea5011ab7df",
+    "https://esm.sh/v135/cache-control-parser@2.0.5/denonext/cache-control-parser.mjs": "3ad5fdba7a0073afa5f2d66e2572d4f9b68c1c346786189ecdf3b4e486a36c39",
+    "https://esm.sh/v135/ieee754@1.2.1/denonext/ieee754.mjs": "9ec2806065f50afcd4cf3f3f2f38d93e777a92a5954dda00d219f57d4b24832f",
+    "https://esm.sh/v135/ip@2.0.1/denonext/ip.mjs": "f1f326639b7c27779c100a123e518e0ed651b4ccb5765a4e701d39e15d80b4d3",
+    "https://esm.sh/v135/lodash-es@4.17.21/denonext/lodash-es.mjs": "ca6d37e6a1271d1bd8920da5ff11f7d05465f5d7961d5d09b44db331838981d7"
   },
   "workspace": {
     "packageJson": {

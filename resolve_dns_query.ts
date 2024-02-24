@@ -9,9 +9,9 @@ import {
     NextFunction,
     RetHandler,
 } from "https://cdn.jsdelivr.net/gh/masx200/deno-http-middleware@3.3.0/mod.ts";
-import Packet from "npm:native-dns-packet@0.1.1";
+import Packet from "https://esm.sh/native-dns-packet@0.1.1";
 // console.log(JSONSTRINGIFYNULL4({ Packet });
-import Buffer from "npm:buffer@6.0.3";
+import Buffer from "https://esm.sh/buffer@6.0.3";
 import { reply_dns_query } from "./reply_dns_query.ts";
 import { DNSPACKETInterface } from "./DNSPACKETInterface.ts";
 // import { DNSPACKET } from "./DNSPACKET.ts";

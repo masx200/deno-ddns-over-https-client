@@ -6,9 +6,9 @@ import {
 } from "https://cdn.jsdelivr.net/gh/masx200/deno-http-middleware@3.3.0/mod.ts";
 import { dns_query_path_name } from "./dns_query_path_name.tsx";
 import { get_path_name } from "./get_path_name.tsx";
-import Packet from "npm:native-dns-packet@0.1.1";
+import Packet from "https://esm.sh/native-dns-packet@0.1.1";
 // console.log(JSONSTRINGIFYNULL4({ Packet });
-import Buffer from "npm:buffer@6.0.3";
+import Buffer from "https://esm.sh/buffer@6.0.3";
 import { base64Decode } from "./base64Decode.tsx";
 import { JSONSTRINGIFYNULL4 } from "./JSONSTRINGIFYNULL4.ts";
 // console.log(JSONSTRINGIFYNULL4({ Buffer });

@@ -1,11 +1,12 @@
 import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
-import { isPrivate, isPublic } from "npm:ip@2.0.1";
+import { isPrivate, isPublic } from "https://esm.sh/ip@2.0.1/";
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 import { isIPv4 } from "https://deno.land/std@0.169.0/node/internal/net.ts";
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import { check_response_ok } from "https://deno.land/x/masx200_get_public_ip_address@1.0.4/check_response_ok.ts";
+import { uniqBy } from "https://esm.sh/lodash-es@4.17.21/";
 export async function getPublicIpv4orv6(get_ip_url: string): Promise<string> {
     const response = await fetch(get_ip_url);
     await check_response_ok(response);
@@ -105,7 +106,8 @@ export async function run_ddns_update_once(
                 return true;
             }
         });
-
+        //@ts-ignore
+        localdata = uniqBy(localdata, (a) => a.content);
         console.log("本地地址信息", localdata);
 
         console.log("远程地址信息", remotedata);

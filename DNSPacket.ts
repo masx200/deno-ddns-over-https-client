@@ -1,5 +1,5 @@
-import Packet from "npm:native-dns-packet@0.1.1";
-import Buffer from "npm:buffer@6.0.3";
+import Packet from "https://esm.sh/native-dns-packet@0.1.1";
+import Buffer from "https://esm.sh/buffer@6.0.3";
 import { JSONSTRINGIFYNULL4 } from "./JSONSTRINGIFYNULL4.ts";
 // import { DNSPACKET } from "./DNSPACKET.ts";
 import { DNSQuestion } from "./DNSQuestion.ts";
