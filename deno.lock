@@ -7,6 +7,7 @@
       "npm:@types/node@20.11.19": "npm:@types/node@20.11.19",
       "npm:@types/node@20.2.5": "npm:@types/node@20.2.5",
       "npm:buffer@6.0.3": "npm:buffer@6.0.3",
+      "npm:ip": "npm:ip@2.0.1",
       "npm:lodash-es@4.17.21": "npm:lodash-es@4.17.21",
       "npm:native-dns-packet@0.1.1": "npm:native-dns-packet@0.1.1"
     },
@@ -60,6 +61,10 @@
       },
       "ieee754@1.2.1": {
         "integrity": "sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==",
+        "dependencies": {}
+      },
+      "ip@2.0.1": {
+        "integrity": "sha512-lJUL9imLTNi1ZfXT+DU6rBBdbiKGBuay9B6xGSPVjUeQwaH1RIGqef8RZkUtHioLmSNpPR5M4HVKJGm1j8FWVQ==",
         "dependencies": {}
       },
       "ipaddr.js@2.1.0": {

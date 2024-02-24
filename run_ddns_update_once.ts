@@ -1,8 +1,9 @@
 import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
-
+import { isPrivate, isPublic } from "npm:ip@2.0.1";
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 import { DDNSClientOptions } from "./DDNSClientOptions.ts";
+import { isIPv4 } from "https://deno.land/std@0.169.0/node/internal/net.ts";
 
 /**
  * 异步函数,用于执行一次DDNS更新
@@ -25,7 +26,7 @@ export async function run_ddns_update_once(
             opts.service_url,
             opts.token,
         );
-        const [localdata, remotedata] = await Promise.all([
+        let [localdata, remotedata] = await Promise.all([
             getAllTailscaleNetworkIPsAndSelfPublicIPs({
                 name: name,
                 public: opts.public,
@@ -39,7 +40,50 @@ export async function run_ddns_update_once(
                 type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
             }),
         ]);
+        if (opts.interfaces) {
+            for (
+                const networkInterfaceInfo of Deno.networkInterfaces().filter(
+                    (a) => a.address !== "127.0.0.1" && a.address !== "::1",
+                )
+            ) {
+                if (typeof opts.interfaces === "boolean" && opts.interfaces) {
+                    localdata.push({
+                        name: name,
+                        content: networkInterfaceInfo.address,
+                        type: networkInterfaceInfo.family === "IPv4"
+                            ? "A"
+                            : "AAAA",
+                    });
+                } else if (
+                    Array.isArray(opts.interfaces) &&
+                    opts.interfaces.includes(networkInterfaceInfo.name)
+                ) {
+                    localdata.push({
+                        name: name,
+                        content: networkInterfaceInfo.address,
+                        type: networkInterfaceInfo.family === "IPv4"
+                            ? "A"
+                            : "AAAA",
+                    });
+                }
+            }
+        }
 
+        localdata = localdata.filter(function (a) {
+            if (ipv6 && isIPv6(a.content)) {
+                return true;
+            }
+            if (ipv4 && isIPv4(a.content)) {
+                return true;
+            }
+        }).filter(function (a) {
+            if (opts.private && isPrivate(a.content)) {
+                return true;
+            }
+            if (opts.public && isPublic(a.content)) {
+                return true;
+            }
+        });
         console.log("本地地址信息", localdata);
 
         console.log("远程地址信息", remotedata);
