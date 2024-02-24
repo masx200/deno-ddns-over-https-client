@@ -18,7 +18,7 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -
 -   tailscale: 布尔值，表示是否启用 Tailscale 地址
 -
--   public: 布尔值，表示是否启用公共地址
+-   public: 布尔值，表示是否启用公共地址,并向服务器查询本机的公共地址
 -
 -   private: 布尔值，表示是否启用私有地址
 -

@@ -64,7 +64,9 @@ const helptext = `- interval: 数值，表示更新间隔时间（单位：毫�
 
 - tailscale: 布尔值，表示是否启用 Tailscale
 
-- public: 布尔值，表示是否启用公共 地址
+-public: 布尔值，表示是否启用公共地址,并向服务器查询本机的公共地址
+-
+-   private: 布尔值，表示是否启用私有地址
 
 - token: 字符串，表示 API 令牌
 
