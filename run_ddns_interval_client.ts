@@ -28,7 +28,8 @@ export async function run_ddns_interval_client(
         ipv6: boolean;
         tailscale: boolean;
         public: boolean;
-        interfaces: boolean;
+        private: boolean | string;
+        interfaces: boolean | string;
         token: string;
         name: string;
         service_url: string;
@@ -103,6 +104,9 @@ async function main() {
         opts.interfaces ? opts.interfaces === "true" : true,
     );
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
+    const private_param = Boolean(
+        opts.private ? opts.private === "true" : true,
+    );
 
     const interval = Number(opts.interval || 30 * 1000);
 
@@ -112,16 +116,21 @@ async function main() {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
 
+    const tailscale = Boolean(
+        opts.tailscale ? opts.tailscale === "true" : true,
+    );
+    const public_param = Boolean(opts.public ? opts.public === "true" : true);
     /*  const stop = */ await run_ddns_interval_client({
         interval: interval,
 
         ipv4: ipv4,
+        private: private_param,
         interfaces,
         ipv6: ipv6,
 
-        tailscale: Boolean(opts.tailscale ? opts.tailscale === "true" : true),
+        tailscale: tailscale,
 
-        public: Boolean(opts.public ? opts.public === "true" : true),
+        public: public_param,
 
         token: opts.token ?? "token",
 
