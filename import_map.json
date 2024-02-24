@@ -1,5 +1,6 @@
 {
     "imports": {
+        "@masx200/mini-cli-args-parser": "npm:@masx200/mini-cli-args-parser@1.1.0",
         "assert": "https://esm.sh/@types/node@20.2.5/assert.d.ts",
         "node:test": "https://esm.sh/@types/node@20.2.5/test.d.ts",
         "net": "node:net",

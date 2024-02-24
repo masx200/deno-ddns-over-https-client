@@ -1,5 +1,6 @@
 import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
-import { isPrivate, isPublic } from "https://esm.sh/ip@2.0.1/";
+import ip from "https://esm.sh/ip@2.0.1/";
+const { isPrivate, isPublic } = ip;
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 import { DDNSClientOptions } from "./DDNSClientOptions.ts";

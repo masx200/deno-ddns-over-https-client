@@ -10,6 +10,7 @@
       "https://esm.sh/ip": "https://esm.sh/ip@2.0.1",
       "https://esm.sh/lodash-es@4.17.12": "https://esm.sh/lodash-es@4.17.12",
       "https://esm.sh/lodash-es@4.17.21": "npm:lohttps://esm.sh/-es@4.17.21",
+      "npm:@masx200/mini-cli-args-parser@1.1.0": "npm:@masx200/mini-cli-args-parser@1.1.0",
       "npm:native-dns-packet@0.1.1": "npm:native-dns-packet@0.1.1"
     },
     "npm": {

@@ -4,7 +4,7 @@
 // console.log(await getAllTailscaleNetworkIPsAndSelfPublicIPs());
 
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import parse from "https://esm.sh/@masx200/mini-cli-args-parser@1.1.0";
+import parse from "@masx200/mini-cli-args-parser";
 import { run_ddns_update_once } from "./run_ddns_update_once.ts";
 import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 /**
