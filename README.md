@@ -20,7 +20,7 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -
 -   public: 布尔值,表示是否启用公共地址,默认为 true.
 -
--   get_ip_url:向服务器查询本机的公共地址,可以为多个，逗号分割默认为https://ipv6.ident.me/,https://ipv4.ident.me/,https://4.ipw.cn,https://6.ipw.cn，https://api4.ipify.org，https://api6.ipify.org/。
+-   get_ip_url:向服务器查询本机的公共地址,可以为多个，逗号分割,默认为https://ipv6.ident.me/,https://ipv4.ident.me/,https://4.ipw.cn,https://6.ipw.cn，https://api4.ipify.org，https://api6.ipify.org/。
 -   
 -
 -   private: 布尔值,表示是否启用私有地址,忽略回环地址,默认为false。
