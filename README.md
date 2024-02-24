@@ -18,11 +18,17 @@ deno run -A ./run_ddns_interval_client.ts --name=xxxxxx-xxxx.xxxxx.xxx.xxx --ser
 -
 -   tailscale: 布尔值,表示是否启用 Tailscale 地址,默认为 false.
 -
--   public: 布尔值,表示是否启用公共地址,并向服务器查询本机的公共地址,默认为 true.
+-   public: 布尔值,表示是否启用公共地址,默认为 true.
 -
--   private: 布尔值,表示是否启用私有地址,忽略回环地址,或者可以是多个 cidr,比如
-    192.168.1.0/24,100.64.0.0/10,用逗号分隔,默认为 false.
+-   get_ip_url:向服务器查询本机的公共地址,可以为多个，逗号分割默认为https://ipv6.ident.me/,https://ipv4.ident.me/,https://4.ipw.cn,https://6.ipw.cn，https://api4.ipify.org，https://api6.ipify.org/。
+-   
 -
+-   private: 布尔值,表示是否启用私有地址,忽略回环地址,默认为false。
+-   allowed_cidr:可以是多个允许的 cidr,比如
+    192.168.1.0/24,100.64.0.0/10,用逗号分隔,默认为允许公有地址.
+    
+-   prohibited_cidr:可以是多个禁止的cidr，逗号分割，默认为禁止私有地址。
+-   
 -   token: 字符串,表示 API 令牌,必须的.
 -
 -   name: 字符串,表示 主机域名,可以有多个域名,用逗号分隔,必须的.
