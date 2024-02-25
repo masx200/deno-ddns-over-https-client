@@ -32,7 +32,7 @@ export async function run_ddns_update_once(
         let [localdata, remotedata] = await Promise.all([
             getAllTailscaleNetworkIPsAndSelfPublicIPs({
                 name: name,
-                public: opts.public,
+                public: Boolean(opts.public && opts.get_ip_url.length),
                 tailscale: opts.tailscale,
                 ipv4: opts.ipv4,
                 ipv6: opts.ipv6,
