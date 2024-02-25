@@ -115,15 +115,17 @@ async function main() {
     if (!ipv4 && !ipv6) {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
-    const get_ip_url: string[] = (opts.get_ip_url?.split(",") ??
-        [
-            "https://ipv6.ident.me/",
-            "https://ipv4.ident.me/",
-            "https://speed4.neu6.edu.cn/getIP.php",
-            "https://speed.neu6.edu.cn/getIP.php",
-            "https://api4.ipify.org",
-            "https://api6.ipify.org/",
-        ]).filter(Boolean);
+    const get_ip_url: string[] = opts.get_ip_url === "false"
+        ? []
+        : (opts.get_ip_url?.split(",") ??
+            [
+                "https://ipv6.ident.me/",
+                "https://ipv4.ident.me/",
+                "https://speed4.neu6.edu.cn/getIP.php",
+                "https://speed.neu6.edu.cn/getIP.php",
+                "https://api4.ipify.org",
+                "https://api6.ipify.org/",
+            ]).filter(Boolean);
     const tailscale = Boolean(
         opts.tailscale ? opts.tailscale === "true" : false,
     );
