@@ -77,16 +77,20 @@ export async function run_ddns_update_once(
         }
 
         if (opts.public && opts.get_ip_url.length) {
-            localdata.push(
-                ...await Promise.all(opts.get_ip_url.map(async (a) => {
-                    const ip = await getPublicIpv4orv6(a);
-                    return {
-                        name: name,
-                        content: ip,
-                        type: isIPv6(ip) ? "AAAA" : "A",
-                    };
-                })),
-            );
+            try {
+                localdata.push(
+                    ...await Promise.all(opts.get_ip_url.map(async (a) => {
+                        const ip = await getPublicIpv4orv6(a);
+                        return {
+                            name: name,
+                            content: ip,
+                            type: isIPv6(ip) ? "AAAA" : "A",
+                        };
+                    })),
+                );
+            } catch (error) {
+                console.error(error);
+            }
         }
         localdata = localdata.filter(function (a) {
             if (ipv6 && isIPv6(a.content)) {
