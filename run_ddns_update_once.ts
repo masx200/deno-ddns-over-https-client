@@ -23,7 +23,7 @@ import { isPublic } from "./isPublic.ts";
 export async function run_ddns_update_once(
     opts: DDNSClientOptions,
 ) {
-    for (const name of opts.name) {
+    return await Promise.all(opts.name.map(async (name) => {
         const { ipv4, ipv6 } = opts;
         const client = new DNSRecordsRemoteJSONRPC(
             opts.service_url,
@@ -161,5 +161,5 @@ export async function run_ddns_update_once(
             );
             console.log("更新完成", { 需要删除的记录ID, 需要添加的记录内容 });
         }
-    }
+    }));
 }

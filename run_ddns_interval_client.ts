@@ -24,6 +24,7 @@ import { DDNSClientOptions } from "./DDNSClientOptions.ts";
 export async function run_ddns_interval_client(
     opts: DDNSClientOptions,
 ): Promise<() => void> {
+    console.log(opts);
     try {
         await run_ddns_update_once(opts); // 运行一次DDNS更新
     } catch (error) {
