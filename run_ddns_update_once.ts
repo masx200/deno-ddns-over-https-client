@@ -7,6 +7,7 @@ import { getPublicIpv4orv6 } from "./getPublicIpv4orv6.ts";
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { isPrivate } from "./isPrivate.ts";
 import { isPublic } from "./isPublic.ts";
+import { DDNScontentContent } from "./DDNScontentContent.ts";
 
 /**
  * 异步函数,用于执行一次DDNS更新
@@ -79,14 +80,20 @@ export async function run_ddns_update_once(
         if (opts.public && opts.get_ip_url.length) {
             try {
                 localdata.push(
-                    ...await Promise.all(opts.get_ip_url.map(async (a) => {
-                        const ip = await getPublicIpv4orv6(a);
-                        return {
-                            name: name,
-                            content: ip,
-                            type: isIPv6(ip) ? "AAAA" : "A",
-                        };
-                    })),
+                    ...(await Promise.allSettled(
+                        opts.get_ip_url.map(async (a) => {
+                            const ip = await getPublicIpv4orv6(a);
+                            return {
+                                name: name,
+                                content: ip,
+                                type: isIPv6(ip) ? "AAAA" : "A",
+                            };
+                        }),
+                    )).filter((a) => {
+                        if (a.status === "rejected") console.error(a.reason);
+                        return a.status === "fulfilled";
+                    }).map((a) => a.status === "fulfilled" ? a.value : null)
+                        .filter(Boolean) as DDNScontentContent[],
                 );
             } catch (error) {
                 console.error(error);
