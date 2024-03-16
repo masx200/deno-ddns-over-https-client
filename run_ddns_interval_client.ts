@@ -91,7 +91,7 @@ if (import.meta.main) {
     await main();
 }
 
-async function main() {
+export async function main() {
     const opts = parse(Deno.args);
 
     console.log(opts);

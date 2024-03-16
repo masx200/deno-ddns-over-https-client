@@ -1,5 +1,19 @@
 {
     "dependencies": {
+        "@masx200/mini-cli-args-parser": "^1.1.0",
         "@types/node": "^20.11.19"
-    }
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
+    },
+    "name": "@masx200/deno-ddns-over-https-client",
+    "version": "1.6.2",
+    "main": "./mod.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/masx200/deno-ddns-over-https-client.git"
+    },
+    "author": "masx200 <34191203+masx200@users.noreply.github.com>",
+    "license": "MIT"
 }
