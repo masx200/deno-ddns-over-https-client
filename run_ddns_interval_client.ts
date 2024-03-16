@@ -59,14 +59,18 @@ const helptext = `
 -
 - public: 布尔值,表示是否启用公共地址,默认为 true.
 -
-- get_ip_url:布尔值或字符串,向服务器查询本机的公共地址,可以为多个字符串,逗号分割,默认为\` [
+- get_ip_url:布尔值或字符串,向服务器查询本机的公共地址,可以为多个字符串,逗号分割,默认为
+\`\`\`
+ [
     "https://ipv6.ident.me/",
     "https://ipv4.ident.me/",
     "https://speed4.neu6.edu.cn/getIP.php",
     "https://speed.neu6.edu.cn/getIP.php",
     "https://api4.ipify.org",
     "https://api6.ipify.org/",
-]\`。
+    "https://api-ipv6.ip.sb/ip",
+    "https://api-ipv4.ip.sb/ip"
+]\`\`\`。
 -
 -
 - private: 布尔值,表示是否启用私有地址,忽略回环地址,默认为 false。
@@ -133,6 +137,8 @@ async function main() {
                 "https://speed.neu6.edu.cn/getIP.php",
                 "https://api4.ipify.org",
                 "https://api6.ipify.org/",
+                "https://api-ipv6.ip.sb/ip",
+                "https://api-ipv4.ip.sb/ip",
             ]).filter(Boolean);
     const tailscale = Boolean(
         opts.tailscale ? opts.tailscale === "true" : false,
