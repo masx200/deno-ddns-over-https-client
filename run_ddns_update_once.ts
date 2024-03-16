@@ -83,6 +83,7 @@ export async function run_ddns_update_once(
                     ...(await Promise.allSettled(
                         opts.get_ip_url.map(async (a) => {
                             const ip = await getPublicIpv4orv6(a);
+                            console.log({ get_ip_url: a, ip_address: ip });
                             return {
                                 name: name,
                                 content: ip,
