@@ -394,6 +394,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@masx200/mini-cli-args-parser@^1.1.0",
         "npm:@types/node@^20.11.19"
       ]
     }
