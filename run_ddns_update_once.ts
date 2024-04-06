@@ -44,6 +44,9 @@ export async function run_ddns_update_once(
                 type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
             }),
         ]);
+
+        localdata = localdata.filter((a) => ["A", "AAAA"].includes(a.type));
+        remotedata = remotedata.filter((a) => ["A", "AAAA"].includes(a.type));
         if (opts.interfaces) {
             const networkInterfaces = Deno.networkInterfaces().filter(
                 (a) =>
