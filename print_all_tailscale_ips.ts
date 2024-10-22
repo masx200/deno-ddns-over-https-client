@@ -5,10 +5,11 @@ import {
 import type { DDNScontentContent } from "./DDNScontentContent.ts";
 import { getAllTailscaleNetworkIPsAndSelfPublicIPs } from "./get_all_tailscale_ips.ts";
 import { runCommand } from "./runCommand.ts";
+if (import.meta.main) {
+    console.log(await getAllTailscaleNetworkIPsAndSelfPublicIPs());
 
-console.log(await getAllTailscaleNetworkIPsAndSelfPublicIPs());
-
-console.log(await getPeersTailscaleNetworkIPs());
+    console.log(await getPeersTailscaleNetworkIPs());
+}
 
 export async function getPeersTailscaleNetworkIPs(
     opts: {
