@@ -1,22 +1,37 @@
-lockfileVersion: '6.0'
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@types/node':
-    specifier: ^20.11.19
-    version: 20.11.19
+importers:
+
+  .:
+    dependencies:
+      '@masx200/mini-cli-args-parser':
+        specifier: ^1.1.0
+        version: 1.1.0
+      '@types/node':
+        specifier: ^22.7.7
+        version: 22.7.7
 
 packages:
 
-  /@types/node@20.11.19:
-    resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
-    dependencies:
-      undici-types: 5.26.5
-    dev: false
+  '@masx200/mini-cli-args-parser@1.1.0':
+    resolution: {integrity: sha512-aq0dBwLttIBQxqbQ1xUNq3SwI0fZqLArZKhQYNnOrUyiCf8BR9kTjl7sWLIN//ozZrLD19z8aAxPfdZdx1siCA==}
 
-  /undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-    dev: false
+  '@types/node@22.7.7':
+    resolution: {integrity: sha512-SRxCrrg9CL/y54aiMCG3edPKdprgMVGDXjA3gB8UmmBW5TcXzRUYAh8EWzTnSJFAd1rgImPELza+A3bJ+qxz8Q==}
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+snapshots:
+
+  '@masx200/mini-cli-args-parser@1.1.0': {}
+
+  '@types/node@22.7.7':
+    dependencies:
+      undici-types: 6.19.8
+
+  undici-types@6.19.8: {}

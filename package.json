@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "@masx200/mini-cli-args-parser": "^1.1.0",
-        "@types/node": "^20.11.19"
+        "@types/node": "^22.7.7"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
