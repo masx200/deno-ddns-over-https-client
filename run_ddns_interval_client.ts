@@ -1,3 +1,14 @@
+const IPADDRESSLOOKUPURLdefault = [
+    "https://ipv6.ident.me/",
+    "https://ipv4.ident.me/",
+    "https://speed4.neu6.edu.cn/getIP.php",
+    "https://speed.neu6.edu.cn/getIP.php",
+    "https://api4.ipify.org",
+    "https://api6.ipify.org/",
+    "https://api-ipv6.ip.sb/ip",
+    "https://api-ipv4.ip.sb/ip",
+    "https://ifconfig.co/",
+];
 // if (import.meta.main) {
 //     console.log(await getAllTailscaleNetworkIPsAndSelfPublicIPs());
 // }
@@ -88,17 +99,6 @@ if (import.meta.main) {
     await main();
 }
 
-const IPADDRESSLOOKUPURLdefault = [
-    "https://ipv6.ident.me/",
-    "https://ipv4.ident.me/",
-    "https://speed4.neu6.edu.cn/getIP.php",
-    "https://speed.neu6.edu.cn/getIP.php",
-    "https://api4.ipify.org",
-    "https://api6.ipify.org/",
-    "https://api-ipv6.ip.sb/ip",
-    "https://api-ipv4.ip.sb/ip",
-    "https://ifconfig.co/",
-];
 export async function main() {
     const opts = parse(Deno.args);
 
