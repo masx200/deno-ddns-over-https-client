@@ -6,7 +6,7 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import parse from "@masx200/mini-cli-args-parser";
 import { run_ddns_update_once } from "./run_ddns_update_once.ts";
-import { DDNSClientOptions } from "./DDNSClientOptions.ts";
+import type { DDNSClientOptions } from "./DDNSClientOptions.ts";
 /**
  * 异步函数,用于运行DDNS间隔客户端
  * @param opts - 包含以下属性的对象：
@@ -31,20 +31,16 @@ export async function run_ddns_interval_client(
         console.error(error);
     }
 
-    const interval =
-        (Number.isNaN(opts.interval) || (opts.interval < 30 * 1000))
-            ? 30 * 1000
-            : opts.interval;
-    const timer = setInterval(
-        async () => {
-            try {
-                await run_ddns_update_once(opts); // 运行一次DDNS更新
-            } catch (error) {
-                console.error(error);
-            } // 每隔指定时间运行一次DDNS更新
-        },
-        interval,
-    );
+    const interval = Number.isNaN(opts.interval) || opts.interval < 30 * 1000
+        ? 30 * 1000
+        : opts.interval;
+    const timer = setInterval(async () => {
+        try {
+            await run_ddns_update_once(opts); // 运行一次DDNS更新
+        } catch (error) {
+            console.error(error);
+        } // 每隔指定时间运行一次DDNS更新
+    }, interval);
     return () => clearInterval(timer); // 返回一个清除定时器的函数
 }
 const helptext = `
@@ -97,7 +93,10 @@ export async function main() {
     console.log(opts);
 
     if (
-        Deno.args.length === 0 || !opts.token || !opts.name || !opts.service_url
+        Deno.args.length === 0 ||
+        !opts.token ||
+        !opts.name ||
+        !opts.service_url
     ) {
         console.log(helptext);
 
@@ -112,7 +111,7 @@ export async function main() {
                 ? true
                 : opts.interfaces === "false"
                 ? false
-                : opts.interfaces?.split(",")
+                : String(opts.interfaces)?.split(",")
             : false,
     );
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
@@ -127,19 +126,18 @@ export async function main() {
     if (!ipv4 && !ipv6) {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
-    const get_ip_url: string[] = opts.get_ip_url === "false"
-        ? []
-        : (opts.get_ip_url?.split(",") ??
-            [
-                "https://ipv6.ident.me/",
-                "https://ipv4.ident.me/",
-                "https://speed4.neu6.edu.cn/getIP.php",
-                "https://speed.neu6.edu.cn/getIP.php",
-                "https://api4.ipify.org",
-                "https://api6.ipify.org/",
-                "https://api-ipv6.ip.sb/ip",
-                "https://api-ipv4.ip.sb/ip",
-            ]).filter(Boolean);
+    const get_ip_url: string[] = opts.get_ip_url === "false" ? [] : (
+        String(opts.get_ip_url)?.split(",") ?? [
+            "https://ipv6.ident.me/",
+            "https://ipv4.ident.me/",
+            "https://speed4.neu6.edu.cn/getIP.php",
+            "https://speed.neu6.edu.cn/getIP.php",
+            "https://api4.ipify.org",
+            "https://api6.ipify.org/",
+            "https://api-ipv6.ip.sb/ip",
+            "https://api-ipv4.ip.sb/ip",
+        ]
+    ).filter(Boolean);
     const tailscale = Boolean(
         opts.tailscale ? opts.tailscale === "true" : false,
     );
@@ -156,10 +154,12 @@ export async function main() {
 
         public: public_param,
 
-        token: opts.token ?? "token",
+        token: String(opts.token ?? "token"),
 
-        name: opts.name.split(",") ?? "name",
+        name: (String(opts.name)?.split(",") ?? ["name"]).map((name) =>
+            name.trim()
+        ),
 
-        service_url: opts.service_url ?? "XXXXXXXXXXXXXXXXXXXXX",
+        service_url: String(opts.service_url ?? "XXXXXXXXXXXXXXXXXXXXX"),
     });
 }
