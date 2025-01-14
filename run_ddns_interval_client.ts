@@ -22,7 +22,7 @@ import type { DDNSClientOptions } from "./DDNSClientOptions.ts";
  * @returns 返回一个函数,用于清除定时器
  */
 export async function run_ddns_interval_client(
-    opts: DDNSClientOptions,
+    opts: DDNSClientOptions
 ): Promise<() => void> {
     console.log(opts);
     try {
@@ -31,9 +31,10 @@ export async function run_ddns_interval_client(
         console.error(error);
     }
 
-    const interval = Number.isNaN(opts.interval) || opts.interval < 30 * 1000
-        ? 30 * 1000
-        : opts.interval;
+    const interval =
+        Number.isNaN(opts.interval) || opts.interval < 30 * 1000
+            ? 30 * 1000
+            : opts.interval;
     const timer = setInterval(async () => {
         try {
             await run_ddns_update_once(opts); // 运行一次DDNS更新
@@ -87,6 +88,17 @@ if (import.meta.main) {
     await main();
 }
 
+const IPADDRESSLOOKUPURLdefault = [
+    "https://ipv6.ident.me/",
+    "https://ipv4.ident.me/",
+    "https://speed4.neu6.edu.cn/getIP.php",
+    "https://speed.neu6.edu.cn/getIP.php",
+    "https://api4.ipify.org",
+    "https://api6.ipify.org/",
+    "https://api-ipv6.ip.sb/ip",
+    "https://api-ipv4.ip.sb/ip",
+    "https://ifconfig.co/",
+];
 export async function main() {
     const opts = parse(Deno.args);
 
@@ -112,11 +124,11 @@ export async function main() {
                 : opts.interfaces === "false"
                 ? false
                 : String(opts.interfaces)?.split(",")
-            : false,
+            : false
     );
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
     const private_param = Boolean(
-        opts.private ? opts.private === "true" : false,
+        opts.private ? opts.private === "true" : false
     );
 
     const interval = Number(opts.interval || 30 * 1000);
@@ -126,20 +138,17 @@ export async function main() {
     if (!ipv4 && !ipv6) {
         throw new Error("ipv4 and ipv6 must be true or false");
     }
-    const get_ip_url: string[] = opts.get_ip_url === "false" ? [] : (
-        String(opts.get_ip_url)?.split(",") ?? [
-            "https://ipv6.ident.me/",
-            "https://ipv4.ident.me/",
-            "https://speed4.neu6.edu.cn/getIP.php",
-            "https://speed.neu6.edu.cn/getIP.php",
-            "https://api4.ipify.org",
-            "https://api6.ipify.org/",
-            "https://api-ipv6.ip.sb/ip",
-            "https://api-ipv4.ip.sb/ip",
-        ]
-    ).filter(Boolean);
+    const get_ip_url: string[] =
+        typeof opts.get_ip_url == "string"
+            ? opts.get_ip_url === "false"
+                ? []
+                : (
+                      String(opts.get_ip_url)?.split(",") ??
+                      IPADDRESSLOOKUPURLdefault
+                  ).filter(Boolean)
+            : IPADDRESSLOOKUPURLdefault;
     const tailscale = Boolean(
-        opts.tailscale ? opts.tailscale === "true" : false,
+        opts.tailscale ? opts.tailscale === "true" : false
     );
     const public_param = Boolean(opts.public ? opts.public === "true" : true);
     /*  const stop = */ await run_ddns_interval_client({
