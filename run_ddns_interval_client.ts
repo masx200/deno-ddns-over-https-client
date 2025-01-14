@@ -7,7 +7,7 @@ const IPADDRESSLOOKUPURLdefault = [
     "https://api6.ipify.org/",
     "https://api-ipv6.ip.sb/ip",
     "https://api-ipv4.ip.sb/ip",
-    "https://ifconfig.co/",
+    "https://ifconfig.co/ip",
 ];
 // if (import.meta.main) {
 //     console.log(await getAllTailscaleNetworkIPsAndSelfPublicIPs());
