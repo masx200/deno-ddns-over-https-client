@@ -5,12 +5,12 @@ import {
     isIPv6,
 } from "https://deno.land/std@0.169.0/node/internal/net.ts";
 import { DNSServer } from "./DNSServer.ts";
-import { DNSConfig } from "./DNSConfig.ts";
+import type { DNSConfig } from "./DNSConfig.ts";
 import { DNSRecordType } from "./DNSRecordType.ts";
-import { DNSPACKETInterface } from "./DNSPACKETInterface.ts";
+import type { DNSPACKETInterface } from "./DNSPACKETInterface.ts";
 import { dNSRecordsInstance } from "./dNSRecordsInstance.ts";
-//@deno-types="https://unpkg.com/@types/lodash-es@4.17.12/index.d.ts"
-import { uniq } from "https://esm.sh/lodash-es@4.17.21";
+
+import { uniq } from "https://cdn.jsdelivr.net/npm/lodash-es@4.17.21/+esm";
 // import { DNSPACKET } from "./DNSPACKET.ts";
 /**
  * 回复DNS查询

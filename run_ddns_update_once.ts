@@ -1,6 +1,7 @@
 import { isIPv6 } from "https://deno.land/std@0.143.0/node/internal/net.ts";
 import { isIPv4 } from "https://deno.land/std@0.169.0/node/internal/net.ts";
-import { uniqBy } from "https://esm.sh/lodash-es@4.17.21/";
+
+import { uniqBy } from "https://cdn.jsdelivr.net/npm/lodash-es@4.17.21/+esm";
 import type { DDNSClientOptions } from "./DDNSClientOptions.ts";
 import { DNSRecordsRemoteJSONRPC } from "./DNSRecordsRemote.ts";
 import { getPublicIpv4orv6 } from "./getPublicIpv4orv6.ts";
@@ -22,6 +23,8 @@ import type { DDNScontentContent } from "./DDNScontentContent.ts";
  * @param opts.service_url - 服务URL
  */
 export async function run_ddns_update_once(opts: DDNSClientOptions) {
+    const localdata = await fetchAndFilterLocalAndPublicIPs(opts);
+
     return await Promise.all(
         opts.name.map(async (name) => {
             name = name.trim();
@@ -30,117 +33,91 @@ export async function run_ddns_update_once(opts: DDNSClientOptions) {
                 opts.service_url,
                 opts.token,
             );
-            let [localdata, remotedata] = await Promise.all([
-                getAllTailscaleNetworkIPsAndSelfPublicIPs({
-                    name: name,
-                    public: Boolean(opts.public && opts.get_ip_url.length),
-                    tailscale: opts.tailscale,
-                    ipv4: opts.ipv4,
-                    ipv6: opts.ipv6,
-                }),
-                client.ListDNSRecords({
-                    name: name,
-                    //ipv6 only or ipv4 only
-                    type: ipv4 && !ipv6
-                        ? "A"
-                        : ipv6 && !ipv4
-                        ? "AAAA"
-                        : undefined,
-                }),
-            ]);
 
-            localdata = localdata.filter((a) => ["A", "AAAA"].includes(a.type));
+            let remotedata = await client.ListDNSRecords({
+                name: name,
+                //ipv6 only or ipv4 only
+                type: ipv4 && !ipv6 ? "A" : ipv6 && !ipv4 ? "AAAA" : undefined,
+            });
+
+            // let [localdata, remotedata] = await Promise.all([
+            //     getAllTailscaleNetworkIPsAndSelfPublicIPs({
+            //         name: name,
+            //         public: Boolean(opts.public && opts.get_ip_url.length),
+            //         tailscale: opts.tailscale,
+            //         ipv4: opts.ipv4,
+            //         ipv6: opts.ipv6,
+            //     }),
+            //     client.ListDNSRecords({
+            //         name: name,
+            //         //ipv6 only or ipv4 only
+            //         type: ipv4 && !ipv6
+            //             ? "A"
+            //             : ipv6 && !ipv4
+            //             ? "AAAA"
+            //             : undefined,
+            //     }),
+            // ]);
+
+            // localdata = localdata.filter((a) => ["A", "AAAA"].includes(a.type));
             remotedata = remotedata.filter((a) =>
                 ["A", "AAAA"].includes(a.type)
             );
-            if (opts.interfaces) {
-                const networkInterfaces = Deno.networkInterfaces().filter(
-                    (a) =>
-                        a.address !== "127.0.0.1" &&
-                        a.address !== "::1" &&
-                        !a.address.startsWith("fe80::"),
-                );
-                console.log(networkInterfaces);
-                for (const networkInterfaceInfo of networkInterfaces) {
-                    if (
-                        typeof opts.interfaces === "boolean" &&
-                        opts.interfaces
-                    ) {
-                        localdata.push({
-                            name: name,
-                            content: networkInterfaceInfo.address,
-                            type: networkInterfaceInfo.family === "IPv4"
-                                ? "A"
-                                : "AAAA",
-                        });
-                    } else if (
-                        Array.isArray(opts.interfaces) &&
-                        opts.interfaces.includes(networkInterfaceInfo.name)
-                    ) {
-                        localdata.push({
-                            name: name,
-                            content: networkInterfaceInfo.address,
-                            type: networkInterfaceInfo.family === "IPv4"
-                                ? "A"
-                                : "AAAA",
-                        });
-                    }
-                }
-            }
+            // if (opts.interfaces) {
+            //     const networkInterfaces = Deno.networkInterfaces().filter(
+            //         (a) =>
+            //             a.address !== "127.0.0.1" &&
+            //             a.address !== "::1" &&
+            //             !a.address.startsWith("fe80::")
+            //     );
+            //     console.log(networkInterfaces);
+            //     for (const networkInterfaceInfo of networkInterfaces) {
+            //         if (
+            //             typeof opts.interfaces === "boolean" &&
+            //             opts.interfaces
+            //         ) {
+            //             localdata.push({
+            //                 name: name,
+            //                 content: networkInterfaceInfo.address,
+            //                 type:
+            //                     networkInterfaceInfo.family === "IPv4"
+            //                         ? "A"
+            //                         : "AAAA",
+            //             });
+            //         } else if (
+            //             Array.isArray(opts.interfaces) &&
+            //             opts.interfaces.includes(networkInterfaceInfo.name)
+            //         ) {
+            //             localdata.push({
+            //                 name: name,
+            //                 content: networkInterfaceInfo.address,
+            //                 type:
+            //                     networkInterfaceInfo.family === "IPv4"
+            //                         ? "A"
+            //                         : "AAAA",
+            //             });
+            //         }
+            //     }
+            // }
 
-            if (opts.public && opts.get_ip_url.length) {
-                try {
-                    localdata.push(
-                        ...((
-                            await Promise.allSettled(
-                                opts.get_ip_url.map(async (a) => {
-                                    const ip = await getPublicIpv4orv6(a);
-                                    console.log({
-                                        get_ip_url: a,
-                                        ip_address: ip,
-                                    });
-                                    return {
-                                        name: name,
-                                        content: ip,
-                                        type: isIPv6(ip) ? "AAAA" : "A",
-                                    };
-                                }),
-                            )
-                        )
-                            .filter((a) => {
-                                if (a.status === "rejected") {
-                                    console.error(a.reason);
-                                }
-                                return a.status === "fulfilled";
-                            })
-                            .map((a) =>
-                                a.status === "fulfilled" ? a.value : null
-                            )
-                            .filter(Boolean) as DDNScontentContent[]),
-                    );
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-            localdata = localdata
-                .filter(function (a) {
-                    if (ipv6 && isIPv6(a.content)) {
-                        return true;
-                    }
-                    if (ipv4 && isIPv4(a.content)) {
-                        return true;
-                    }
-                })
-                .filter(function (a) {
-                    if (opts.private && isPrivate(a.content)) {
-                        return true;
-                    }
-                    if (opts.public && isPublic(a.content)) {
-                        return true;
-                    }
-                });
-            //@ts-ignore
-            localdata = uniqBy(localdata, (a) => a.content);
+            // localdata = localdata
+            //     .filter(function (a) {
+            //         if (ipv6 && isIPv6(a.content)) {
+            //             return true;
+            //         }
+            //         if (ipv4 && isIPv4(a.content)) {
+            //             return true;
+            //         }
+            //     })
+            //     .filter(function (a) {
+            //         if (opts.private && isPrivate(a.content)) {
+            //             return true;
+            //         }
+            //         if (opts.public && isPublic(a.content)) {
+            //             return true;
+            //         }
+            //     });
+
             console.log("本地地址信息", localdata);
 
             console.log("远程地址信息", remotedata);
@@ -197,4 +174,100 @@ export async function run_ddns_update_once(opts: DDNSClientOptions) {
             }
         }),
     );
+}
+
+async function fetchAndFilterLocalAndPublicIPs(opts: DDNSClientOptions) {
+    const { ipv4, ipv6 } = opts;
+    // const client = new DNSRecordsRemoteJSONRPC(opts.service_url, opts.token);
+    let localdata = await getAllTailscaleNetworkIPsAndSelfPublicIPs({
+        name: name,
+        public: Boolean(opts.public && opts.get_ip_url.length),
+        tailscale: opts.tailscale,
+        ipv4: opts.ipv4,
+        ipv6: opts.ipv6,
+    });
+
+    localdata = localdata.filter((a) => ["A", "AAAA"].includes(a.type));
+    // remotedata = remotedata.filter((a) => ["A", "AAAA"].includes(a.type));
+    if (opts.interfaces) {
+        const networkInterfaces = Deno.networkInterfaces().filter(
+            (a) =>
+                a.address !== "127.0.0.1" &&
+                a.address !== "::1" &&
+                !a.address.startsWith("fe80::"),
+        );
+        console.log(networkInterfaces);
+        for (const networkInterfaceInfo of networkInterfaces) {
+            if (typeof opts.interfaces === "boolean" && opts.interfaces) {
+                localdata.push({
+                    name: name,
+                    content: networkInterfaceInfo.address,
+                    type: networkInterfaceInfo.family === "IPv4" ? "A" : "AAAA",
+                });
+            } else if (
+                Array.isArray(opts.interfaces) &&
+                opts.interfaces.includes(networkInterfaceInfo.name)
+            ) {
+                localdata.push({
+                    name: name,
+                    content: networkInterfaceInfo.address,
+                    type: networkInterfaceInfo.family === "IPv4" ? "A" : "AAAA",
+                });
+            }
+        }
+    }
+
+    if (opts.public && opts.get_ip_url.length) {
+        try {
+            localdata.push(
+                ...((
+                    await Promise.allSettled(
+                        opts.get_ip_url.map(async (a) => {
+                            const ip = await getPublicIpv4orv6(a);
+                            console.log({
+                                get_ip_url: a,
+                                ip_address: ip,
+                            });
+                            return {
+                                name: name,
+                                content: ip,
+                                type: isIPv6(ip) ? "AAAA" : "A",
+                            };
+                        }),
+                    )
+                )
+                    .filter((a) => {
+                        if (a.status === "rejected") {
+                            console.error(a.reason);
+                        }
+                        return a.status === "fulfilled";
+                    })
+                    .map((a) => (a.status === "fulfilled" ? a.value : null))
+                    .filter(Boolean) as DDNScontentContent[]),
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    localdata = localdata
+        .filter(function (a) {
+            if (ipv6 && isIPv6(a.content)) {
+                return true;
+            }
+            if (ipv4 && isIPv4(a.content)) {
+                return true;
+            }
+        })
+        .filter(function (a) {
+            if (opts.private && isPrivate(a.content)) {
+                return true;
+            }
+            if (opts.public && isPublic(a.content)) {
+                return true;
+            }
+        });
+    // deno-lint-ignore ban-ts-comment
+    //@ts-ignore
+    localdata = uniqBy(localdata, (a) => a.content);
+    return localdata;
 }
