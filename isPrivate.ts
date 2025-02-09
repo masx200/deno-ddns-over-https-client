@@ -1,4 +1,4 @@
-import ip from "https://cdn.jsdelivr.net/npm/ip@2.0.1/+esm";
+import ip from "npm:ip@2.0.1";
 
 // const { isPrivate, isPublic } = ip;
 export function isPrivate(a: string) {
