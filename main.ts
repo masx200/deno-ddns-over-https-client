@@ -22,15 +22,13 @@ export async function main() {
 
     const ipv4 = Boolean(opts.ipv4 ? opts.ipv4 === "true" : true);
 
-    const interfaces = Boolean(
-        opts.interfaces
-            ? opts.interfaces === "true"
-                ? true
-                : opts.interfaces === "false"
-                ? false
-                : String(opts.interfaces)?.split(",")
-            : false,
-    );
+    const interfaces: boolean | string[] = opts.interfaces
+        ? opts.interfaces === "true"
+            ? true
+            : opts.interfaces === "false"
+            ? false
+            : String(opts.interfaces)?.split(",")
+        : false;
     const ipv6 = Boolean(opts.ipv6 ? opts.ipv6 === "true" : true);
     const private_param = Boolean(
         opts.private ? opts.private === "true" : false,
