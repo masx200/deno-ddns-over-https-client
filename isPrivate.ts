@@ -1,6 +1,5 @@
 import ip from "npm:ip@2.0.1";
 
-
 export function isPrivate(a: string) {
     // deno-lint-ignore ban-ts-comment
     //@ts-ignore
